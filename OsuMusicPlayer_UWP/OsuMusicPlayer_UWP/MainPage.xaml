@@ -9,7 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <NavigationView x:Name="NavView" PaneDisplayMode="Top">
+        <NavigationView x:Name="NavView" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed">
             
             <NavigationView.MenuItems>
                 <NavigationViewItem Tag="Music" Icon="MusicInfo" Content="Music" />
@@ -17,20 +17,21 @@
             </NavigationView.MenuItems>
 
             <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="NavViewSerchBox" QueryIcon="Find" />
+                <AutoSuggestBox x:Name="NavViewSearchBox" QueryIcon="Find" Width="200"/>
             </NavigationView.AutoSuggestBox>
 
         </NavigationView>
-
+           
+                    
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth}"/>
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth}"/> <!-- ここの以上なら下のが使われる -->
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="NavViewSearchBox.Width" Value="200"/>
+                        <Setter Target="NavViewSearchBox.Width" Value="300"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
