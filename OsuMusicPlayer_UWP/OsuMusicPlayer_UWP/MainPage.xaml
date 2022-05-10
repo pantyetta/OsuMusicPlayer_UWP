@@ -20,9 +20,17 @@
                 <AutoSuggestBox x:Name="NavViewSearchBox" QueryIcon="Find" Width="200"/>
             </NavigationView.AutoSuggestBox>
 
+            <ScrollViewer Margin="0,0,0,100">
+                <Frame x:Name="ContentFrame" Padding="12,0,12,24" IsTabStop="True"/>
+            </ScrollViewer>
         </NavigationView>
-           
-                    
+
+        <Grid Height="100" VerticalAlignment="Bottom">
+            <Image Source="/Assets/img_1261939_27038703_0.jpg" Width="100" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill"/>
+            <TextBlock TextWrapping="Wrap" Text="Music Title" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="120,-20,0,0" FontSize="20" MaxWidth="300"/> <!-- ここは {x:Bind 変数名}で全体/2-100 + αで表示可能範囲を求める(α=ボタンの広さ) -->
+            <TextBlock TextWrapping="Wrap" Text="Music Artist" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="120,20,0,0" MaxWidth="250"/>   <!-- ここは {x:Bind 変数名}で全体/2-100 + αで表示可能範囲を求める(α=ボタンの広さ) -->
+            <Button HorizontalAlignment="Center">aaa</Button>            
+        </Grid>
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
