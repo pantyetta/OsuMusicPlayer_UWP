@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,19 +23,10 @@ namespace OsuMusicPlayer_UWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
+
         public MainPage()
         {
             this.InitializeComponent();
-        }
-
-        private double getRootPageWidth { get { return rootPage.Width - 100; } }
-
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var newWindowSize = e.NewSize;
-            Palyer_ProgressBar.Width = newWindowSize.Width - 100;
-            Player_Metadata_Title.MaxWidth = (newWindowSize.Width - 100) / 2 - 100;
-            Player_Metadata_Artist.MaxWidth = (newWindowSize.Width - 100) / 2 - 150;
         }
     }
 }

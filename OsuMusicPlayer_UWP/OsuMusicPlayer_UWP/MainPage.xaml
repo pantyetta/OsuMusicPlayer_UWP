@@ -7,10 +7,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Page_SizeChanged">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
     <Grid>
-        <NavigationView x:Name="NavView" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed">
+        <NavigationView x:Name="NavView" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" CompactModeThresholdWidth="631">
 
             <NavigationView.MenuItems>
                 <NavigationViewItem Tag="Music" Icon="MusicInfo" Content="Music" />
@@ -21,35 +21,33 @@
                 <AutoSuggestBox x:Name="NavViewSearchBox" QueryIcon="Find" Width="200"/>
             </NavigationView.AutoSuggestBox>
 
-            <ScrollViewer Margin="0,0,0,100">
-                <Frame x:Name="ContentFrame" Padding="12,0,12,24" IsTabStop="True"/>
-            </ScrollViewer>
+            <ScrollViewer Margin="0,0,0,100"/>
         </NavigationView>
 
-        <Grid x:Name="Player_Grid" Height="100" VerticalAlignment="Bottom">
-            <Image x:Name="Player_Metadata_thumbnail" Source="/Assets/bg.jpg" Width="100" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" />
-            <Grid x:Name="Player_Control_Grid" HorizontalAlignment="Stretch" Margin="100,0,0,0">
-                <ProgressBar x:Name="Palyer_ProgressBar" VerticalAlignment="Top" HorizontalAlignment="Stretch" Value="50" />
-                <TextBlock x:Name="Player_Metadata_Title" TextWrapping="Wrap" Text="Music Title" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,20" FontSize="20" MaxWidth="300"/>
+        <Grid x:Name="Player_Grid" Height="100" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+            <Image x:Name="Player_Metadata_thumbnail" Source="/Assets/bg.jpg" Width="100" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" Visibility="Collapsed" />
+            <Grid x:Name="Player_Control_Grid" HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                <ProgressBar x:Name="Palyer_ProgressBar" VerticalAlignment="Top" Value="50"/>
+                <TextBlock x:Name="Player_Metadata_Title" TextWrapping="NoWrap" Text="Music Title aaaaaaaaaaaaaaaaaaa" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,20" FontSize="20" MaxWidth="170" TextTrimming="CharacterEllipsis"/>
                 <!-- ここは {x:Bind 変数名}で全体/2-100 + αで表示可能範囲を求める(α=ボタンの広さ) -->
-                <TextBlock x:Name="Player_Metadata_Artist" TextWrapping="Wrap" Text="Music Artist" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,20,0,0" MaxWidth="250"/>
+                <TextBlock x:Name="Player_Metadata_Artist" Text="Music Artist aaaaaaaaaaaaaaaaaaaaaaaa" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,20,0,0" MaxWidth="150" TextTrimming="CharacterEllipsis"/>
                 <!-- ここは {x:Bind 変数名}で全体/2-100 + αで表示可能範囲を求める(α=ボタンの広さ) -->
 
-                <Button HorizontalAlignment="Center" Background="{x:Null}" Padding="0,0,0,0" Margin="0,0,60,0">
+                <Button x:Name="Player_Previous" HorizontalAlignment="Center" Background="{x:Null}" Padding="0,0,0,0" Margin="0,0,60,0">
                     <StackPanel>
-                        <SymbolIcon x:Name="Player_Previous" Symbol="Previous" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-            
-                <Button HorizontalAlignment="Center" Background="{x:Null}" Padding="0,0,0,0">
-                    <StackPanel>
-                        <SymbolIcon x:Name="Player_PlayOrPause" Symbol="Pause" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <SymbolIcon x:Name="Player_Previous_Icon" Symbol="Previous" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
 
-                <Button HorizontalAlignment="Center" Background="{x:Null}" Padding="0,0,0,0" Margin="60,0,0,0">
+                <Button x:Name="Player_PlayOrPause" HorizontalAlignment="Center" Background="{x:Null}" Padding="0,0,0,0" Margin="0,0,0,0">
                     <StackPanel>
-                        <SymbolIcon x:Name="Player_Next" Symbol="Next" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <SymbolIcon x:Name="Player_PlayOrPause_Icon" Symbol="Pause" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="Player_Next" HorizontalAlignment="Center" Background="{x:Null}" Padding="0,0,0,0" Margin="60,0,0,0">
+                    <StackPanel>
+                        <SymbolIcon x:Name="Player_Next_Icon" Symbol="Next" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
 
@@ -65,11 +63,28 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth}"/>
+                        <AdaptiveTrigger MinWindowWidth="701"/>
                         <!-- ここの以上なら下のが使われる -->
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NavViewSearchBox.Width" Value="300"/>
+                        <Setter Target="Player_Metadata_thumbnail.Visibility" Value="Visible"/>
+                        <Setter Target="Player_Control_Grid.Margin" Value="100,0,0,0"/>
+                        <Setter Target="Player_Previous.Margin" Value="0,0,160,0"/>
+                        <Setter Target="Player_PlayOrPause.Margin" Value="0,0,100,0"/>
+                        <Setter Target="Player_Next.Margin" Value="0,0,40,0"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1001"/>
+                        <!-- ここの以上なら下のが使われる -->
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Player_Metadata_Title.MaxWidth" Value="300"/>
+                        <Setter Target="Player_Metadata_Artist.MaxWidth" Value="250"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
