@@ -10,7 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
     <Grid>
-        <NavigationView x:Name="NavView" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" CompactModeThresholdWidth="631">
+        <NavigationView x:Name="NavView" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" CompactModeThresholdWidth="631"
+                        Loaded="NavView_Loaded" SelectionChanged="NavView_SelectionChanged" BackRequested="NavView_BackRequested">
 
             <NavigationView.MenuItems>
                 <NavigationViewItem Tag="Music" Icon="MusicInfo" Content="Music" />
@@ -21,7 +22,9 @@
                 <AutoSuggestBox x:Name="NavViewSearchBox" QueryIcon="Find" Width="200"/>
             </NavigationView.AutoSuggestBox>
 
-            <ScrollViewer Margin="0,0,0,100"/>
+            <ScrollViewer Margin="0,0,0,100">
+                <Frame x:Name="ContentFrame" Margin="12,0,12,0" NavigationFailed="Content_Frame_NavigationFailed"/>
+            </ScrollViewer>
         </NavigationView>
 
         <Grid x:Name="Player_Grid" Height="100" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
@@ -73,6 +76,7 @@
                         <Setter Target="Player_Previous.Margin" Value="0,0,160,0"/>
                         <Setter Target="Player_PlayOrPause.Margin" Value="0,0,100,0"/>
                         <Setter Target="Player_Next.Margin" Value="0,0,40,0"/>
+                        <Setter Target="ContentFrame.Margin" Value="24,0,24,0"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

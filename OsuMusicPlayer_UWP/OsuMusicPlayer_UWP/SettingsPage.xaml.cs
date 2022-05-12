@@ -20,13 +20,11 @@ namespace OsuMusicPlayer_UWP
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
-    public sealed partial class Music : Page
+    public sealed partial class SettingsPage : Page
     {
-        public Music()
+        public SettingsPage()
         {
             this.InitializeComponent();
-            
         }
-
     }
 }
