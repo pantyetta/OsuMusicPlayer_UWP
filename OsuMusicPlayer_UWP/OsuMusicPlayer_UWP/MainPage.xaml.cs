@@ -26,5 +26,15 @@ namespace OsuMusicPlayer_UWP
         {
             this.InitializeComponent();
         }
+
+        private double getRootPageWidth { get { return rootPage.Width - 100; } }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var newWindowSize = e.NewSize;
+            Palyer_ProgressBar.Width = newWindowSize.Width - 100;
+            Player_Metadata_Title.MaxWidth = (newWindowSize.Width - 100) / 2 - 100;
+            Player_Metadata_Artist.MaxWidth = (newWindowSize.Width - 100) / 2 - 150;
+        }
     }
 }
