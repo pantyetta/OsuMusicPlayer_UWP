@@ -35,8 +35,8 @@ namespace OsuMusicPlayer_UWP
         /// </summary>
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)> 
         {
-            ("Music", typeof(Music)),
-            ("Playlist", typeof(Playlist)),
+            ("Music", typeof(MusicPage)),
+            ("Playlist", typeof(PlaylistPage)),
         };
         
 
