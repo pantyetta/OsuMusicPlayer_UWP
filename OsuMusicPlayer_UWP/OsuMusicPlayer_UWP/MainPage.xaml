@@ -10,8 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
     <Grid>
-        <NavigationView x:Name="NavView" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" CompactModeThresholdWidth="631"
-                        Loaded="NavView_Loaded" SelectionChanged="NavView_SelectionChanged" BackRequested="NavView_BackRequested">
+        <NavigationView x:Name="NavView" PaneDisplayMode="Auto" CompactModeThresholdWidth="631"
+                        Loaded="NavView_Loaded" SelectionChanged="NavView_SelectionChanged" BackRequested="NavView_BackRequested" Margin="0,0,0,100">
 
             <NavigationView.MenuItems>
                 <NavigationViewItem Tag="Music" Icon="MusicInfo" Content="Music" />
@@ -19,10 +19,10 @@
             </NavigationView.MenuItems>
 
             <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="NavViewSearchBox" QueryIcon="Find" Width="200"/>
+                <AutoSuggestBox x:Name="NavViewSearchBox" QueryIcon="Find"/>
             </NavigationView.AutoSuggestBox>
 
-            <ScrollViewer Margin="0,0,0,100">
+            <ScrollViewer Margin="0,0,0,0">
                 <Frame x:Name="ContentFrame" Margin="12,0,12,0" NavigationFailed="Content_Frame_NavigationFailed"/>
             </ScrollViewer>
         </NavigationView>
@@ -31,6 +31,7 @@
             <Image x:Name="Player_Metadata_thumbnail" Source="/Assets/bg.jpg" Width="100" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" Visibility="Collapsed" />
             <Grid x:Name="Player_Control_Grid" HorizontalAlignment="Stretch" Margin="0,0,0,0">
                 <ProgressBar x:Name="Palyer_ProgressBar" VerticalAlignment="Top" Value="50"/>
+
                 <TextBlock x:Name="Player_Metadata_Title" TextWrapping="NoWrap" Text="Music Title aaaaaaaaaaaaaaaaaaa" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,20" FontSize="20" MaxWidth="170" TextTrimming="CharacterEllipsis"/>
                 <!-- ここは {x:Bind 変数名}で全体/2-100 + αで表示可能範囲を求める(α=ボタンの広さ) -->
                 <TextBlock x:Name="Player_Metadata_Artist" Text="Music Artist aaaaaaaaaaaaaaaaaaaaaaaa" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,20,0,0" MaxWidth="150" TextTrimming="CharacterEllipsis"/>
@@ -59,9 +60,10 @@
                         <SymbolIcon x:Name="Player_Volume" Symbol="Volume" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
+
             </Grid>
         </Grid>
-
+        
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -70,7 +72,6 @@
                         <!-- ここの以上なら下のが使われる -->
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="NavViewSearchBox.Width" Value="300"/>
                         <Setter Target="Player_Metadata_thumbnail.Visibility" Value="Visible"/>
                         <Setter Target="Player_Control_Grid.Margin" Value="100,0,0,0"/>
                         <Setter Target="Player_Previous.Margin" Value="0,0,170,0"/>
