@@ -30,15 +30,19 @@ namespace OsuMusicPlayer_UWP
             this.InitializeComponent();
         }
 
+
         private double getNavigationHeight { get { return rootPage.Height - 1000; } }
+
 
         /// <summary>
         /// ページのリストを作成_pagesでページ管理
         /// </summary>
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)> 
         {
+
             ("Music", typeof(MusicPage)),
             ("Playlist", typeof(PlaylistPage)),
+
         };
         
 
