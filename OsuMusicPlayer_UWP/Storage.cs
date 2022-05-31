@@ -70,7 +70,7 @@ namespace OsuMusicPlayer_UWP
             }
             catch(Exception e)
             {
-                Debug.WriteLine(e.Message);
+                Debug.WriteLine("error: addDB" + e.Message);
             }
 
         }
@@ -109,7 +109,7 @@ namespace OsuMusicPlayer_UWP
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                Debug.WriteLine("error: choose .osu file" + e.Message);
             }
 
             return metadatas;
@@ -179,7 +179,7 @@ namespace OsuMusicPlayer_UWP
                 }
             }catch(Exception e)
             {
-                Debug.WriteLine(e.Message);
+                Debug.WriteLine("error: read" + e.Message);
             }
 
             return metadata;
