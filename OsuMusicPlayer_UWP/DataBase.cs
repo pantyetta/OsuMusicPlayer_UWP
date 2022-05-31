@@ -13,7 +13,7 @@ namespace OsuMusicPlayer_UWP
 
         public DataBase()   //初期値設定
         {
-            this.FileName = "testやで";
+            //this.FileName = "FileName_Null";
         }
     }
 

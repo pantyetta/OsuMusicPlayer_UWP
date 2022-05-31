@@ -11,7 +11,7 @@ namespace OsuMusicPlayer_UWP
 {
     public class Storage
     {
-        public StorageFolder storageFolder { get; set; }
+        private StorageFolder storageFolder { get; set; }
     
         public async Task CheckAccessListAsycn()
         {
@@ -33,7 +33,8 @@ namespace OsuMusicPlayer_UWP
                 {
                     if(storageFolder.TryGetItemAsync("osu!.exe") != null) { 
                         this.storageFolder = storageFolder;
-                        StorageApplicationPermissions.FutureAccessList.AddOrReplace("OsuFolderToken", this.storageFolder);
+                        //アクセスリストを更新する
+                        StorageApplicationPermissions.FutureAccessList.AddOrReplace("OsuFolderToken", this.storageFolder);  
                         Debug.WriteLine("Picked Folder: " + this.storageFolder.Path);
                     }
                 }
@@ -58,7 +59,6 @@ namespace OsuMusicPlayer_UWP
                 foreach (var item in await songsFolder.GetFoldersAsync())
                 {
                     databases.setDatabas = item.Name;
-                    Debug.WriteLine(item.Name);
                 }
             }
             catch(Exception e)
@@ -68,6 +68,52 @@ namespace OsuMusicPlayer_UWP
                 
         }
 
+    }
+
+    /// <summary>
+    /// 曲のフォルダを提供すると整頓されたメタデータを返す
+    /// </summary>
+    class Decoder
+    {
+        async public void ReadFiles(StorageFolder MapFolder)
+        {
+            try {
+                IReadOnlyList<StorageFile> fileList = await MapFolder.GetFilesAsync();
+                foreach (StorageFile file in fileList)
+                {
+                    if (file.FileType == ".osu")     //ファイルリストから.osuだけ
+                    {
+                        Metadata metadata = Converter(file);
+                        //ファイルを読んでConverterに送る
+                        //Converterで必要なmetadataを返してもらう
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        private Metadata Converter(StorageFile osuFile)
+        {
+            var metadata = new Metadata();
+
+            //データを読んでメタデータに入れる
+
+            return metadata;
+        }
+    }
+
+    class Metadata
+    {
+        public string AudioFilename { get; set; }
+        public string Title { get; set; }
+        public string TitleUnicode { get; set; }
+        public string Artist { get; set; }
+        public string ArtistUnicode { get; set; }
+        public string Creator { get; set; }
+        public int BeatmapID { get; set; }
     }
 
 }

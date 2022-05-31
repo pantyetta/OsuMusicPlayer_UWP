@@ -26,8 +26,10 @@ namespace OsuMusicPlayer_UWP
         public MusicPage()
         {
             this.InitializeComponent();
-            this.ViewModel = new DataBaseViewModel();
             this.NavigationCacheMode = NavigationCacheMode.Enabled;
+            this.ViewModel = new DataBaseViewModel();
+
+
         }
 
         public DataBaseViewModel ViewModel { get; set; }
