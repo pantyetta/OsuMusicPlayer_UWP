@@ -44,7 +44,7 @@ namespace OsuMusicPlayer_UWP
                 CompositionName = "Mass in B minor",
                 ReleaseDateTime = new DateTime(1748, 7, 8),
                 SecondsTIme = 100
-        });
+            });
             this.recordings.Add(new Recording()
             {
                 ArtistName = "Ludwig van Beethoven",
