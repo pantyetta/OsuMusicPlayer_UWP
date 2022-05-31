@@ -7,40 +7,25 @@ using System.Threading.Tasks;
 
 namespace OsuMusicPlayer_UWP
 {
-    public class DataBase
+    public class Metadata
     {
-        public string FileName { get; set; }
-
-        public DataBase()   //初期値設定
-        {
-            //this.FileName = "FileName_Null";
-        }
+        public string AudioFilename { get; set; }
+        public string Title { get; set; }
+        public string TitleUnicode { get; set; }
+        public string Artist { get; set; }
+        public string ArtistUnicode { get; set; }
+        public string Creator { get; set; }
+        public int BeatmapID { get; set; }
     }
 
     public class DataBaseViewModel
     {
-        private DataBase defaultDataBase = new DataBase();
-        public DataBase DefaultDataBase { get { return this.defaultDataBase; } }
+        private Metadata defaultDataBase = new Metadata();
+        public Metadata DefaultDataBase { get { return this.defaultDataBase; } }
 
-        static private ObservableCollection<DataBase> databases = new ObservableCollection<DataBase>();    //更新すると関連するUIも変わる & 常に読み込まれるよ
-         public ObservableCollection<DataBase> Databases { get { return databases; } }   //取得
-        public string setDatabas
-        {
-            set
-            {    //追加
-                databases.Add(new DataBase()
-                {
-                    FileName = value
-                });
-            }
-        }
+        static private ObservableCollection<Metadata> databases = new ObservableCollection<Metadata>();    //更新すると関連するUIも変わる & 常に読み込まれるよ
+         public ObservableCollection<Metadata> Databases { get { return databases; } }   //データ取得
+        public Metadata setDatabas { set{ databases.Add(value); } } //データ追加
 
-        public DataBaseViewModel()  //初期化
-        {
-            //databases.Add(new DataBase()
-            //{
-            //    FileName = "test File name."
-            //});
-        }
     }
 }

@@ -38,7 +38,7 @@ namespace OsuMusicPlayer_UWP
         private async void Choose_Button_Click(object sender, RoutedEventArgs e)
         {
             await Storage.PickeFolderAsync();
-            Choose_text.Text = Storage.storageFolder.Path;
+            Choose_text.Text = Storage.GetStorageFolder.Path;
             await this.Storage.LoadSongListAsync();
         }
     }
