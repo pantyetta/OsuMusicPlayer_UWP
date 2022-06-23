@@ -126,6 +126,7 @@
     <Compile Include="MusicPage.xaml.cs">
       <DependentUpon>MusicPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MusicPlayer.cs" />
     <Compile Include="PlaylistPage.xaml.cs">
       <DependentUpon>PlaylistPage.xaml</DependentUpon>
     </Compile>
@@ -134,6 +135,7 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Storage.cs" />
+    <Compile Include="UI.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

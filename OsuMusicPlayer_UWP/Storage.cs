@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -44,7 +45,6 @@ namespace OsuMusicPlayer_UWP
                     Debug.WriteLine(e.Message);
                 }
 
-
             }
             else
             {
@@ -58,13 +58,16 @@ namespace OsuMusicPlayer_UWP
             var decoder = new Decoder();
             try { 
                 StorageFolder songsFolder = await storageFolder.GetFolderAsync("Songs");
-                foreach (var MapFolder in await songsFolder.GetFoldersAsync())   //Songsからマップフォルダ
+                var MapFolders = await songsFolder.GetFoldersAsync();
+                for (int i = 0; i < MapFolders.Count; i++)
                 {
+                    if (i % 50 == 0)
+                        Debug.WriteLine("{0} / {1}", i, MapFolders.Count);
                     //databases.setDatabas = item.Name;
-                    var metadataList = await decoder.ReadFilesAsync(MapFolder); //デコーダからメタデータの配列もらう
-                    foreach(var metadata in metadataList)
+                    var metadataList = await decoder.ReadFilesAsync(MapFolders[i]); //デコーダからメタデータの配列もらう
+                    foreach (var metadata in metadataList)
                     {
-                        databases.setDatabas = metadata;    //データベースに追加
+                        databases.setDatabase = metadata;  //データベースに追加
                     }
                 }
             }
@@ -72,7 +75,8 @@ namespace OsuMusicPlayer_UWP
             {
                 Debug.WriteLine("error: addDB" + e.Message);
             }
-
+            
+            Debug.WriteLine("Metadata load ok.");
         }
 
     }
@@ -94,6 +98,7 @@ namespace OsuMusicPlayer_UWP
                     if (file.FileType == ".osu")     
                     {
                         var metadata = await ConverterAsync(file);
+                        metadata.MapFolder = MapFolder;
                         //metadata.Result.Title
                         //ファイルを読んでConverterに送る
                         //Converterで必要なmetadataを返してもらう

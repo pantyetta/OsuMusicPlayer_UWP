@@ -29,12 +29,12 @@
 
         <Grid x:Name="Player_Grid" Height="100" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
             <Image x:Name="Player_Metadata_thumbnail" Source="/Assets/bg.jpg" Width="100" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" Visibility="Collapsed" />
-            <Grid x:Name="Player_Control_Grid" HorizontalAlignment="Stretch" Margin="0,0,0,0">
+            <Grid x:Name="Player_Control_Grid" HorizontalAlignment="Stretch" Margin="0,0,0,0" >
                 <ProgressBar x:Name="Palyer_ProgressBar" VerticalAlignment="Top" Value="50"/>
 
-                <TextBlock x:Name="Player_Metadata_Title" TextWrapping="NoWrap" Text="Music Title aaaaaaaaaaaaaaaaaaa" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,20" FontSize="20" MaxWidth="170" TextTrimming="CharacterEllipsis"/>
+                <TextBlock x:Name="Player_Metadata_Title" TextWrapping="NoWrap" Text="{x:Bind ViewUI.Title}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,20" FontSize="20" MaxWidth="170" TextTrimming="CharacterEllipsis"/>
                 <!-- ここは {x:Bind 変数名}で全体/2-100 + αで表示可能範囲を求める(α=ボタンの広さ) -->
-                <TextBlock x:Name="Player_Metadata_Artist" Text="Music Artist aaaaaaaaaaaaaaaaaaaaaaaa" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,20,0,0" MaxWidth="150" TextTrimming="CharacterEllipsis"/>
+                <TextBlock x:Name="Player_Metadata_Artist" Text="{x:Bind ViewUI.Artist}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,20,0,0" MaxWidth="150" TextTrimming="CharacterEllipsis"/>
                 <!-- ここは {x:Bind 変数名}で全体/2-100 + αで表示可能範囲を求める(α=ボタンの広さ) -->
 
                 <Button x:Name="Player_Previous" HorizontalAlignment="Center" Background="{x:Null}" Padding="5,5,5,5" Margin="0,0,70,0" CornerRadius="90,90,90,90">
@@ -43,9 +43,9 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Player_PlayOrPause" HorizontalAlignment="Center" Background="{x:Null}" Padding="5,5,5,5" Margin="0,0,0,0" CornerRadius="90,90,90,90">
+                <Button x:Name="Player_PlayOrPause" HorizontalAlignment="Center" Background="{x:Null}" Padding="5,5,5,5" Margin="0,0,0,0" CornerRadius="90,90,90,90" Click="Player_PlayOrPause_Click">
                     <StackPanel>
-                        <SymbolIcon x:Name="Player_PlayOrPause_Icon" Symbol="Pause" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <SymbolIcon x:Name="Player_PlayOrPause_Icon" Symbol="Play" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
 

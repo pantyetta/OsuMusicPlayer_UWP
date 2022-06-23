@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,15 +25,42 @@ namespace OsuMusicPlayer_UWP
     /// </summary>
     public sealed partial class MusicPage : Page
     {
+        public DataBaseViewModel ViewModel { get; set; }
+        public MusicPlayer musicPlayer { get; set; }
+
+        UI frontend = new UI();
+        MusicPlayList musicPlayList = new MusicPlayList();
+        DataBaseViewModel dataBaseViewModel = new DataBaseViewModel();
+
         public MusicPage()
         {
             this.InitializeComponent();
-            this.NavigationCacheMode = NavigationCacheMode.Enabled;
+            //this.NavigationCacheMode = NavigationCacheMode.Enabled;
             this.ViewModel = new DataBaseViewModel();
-
-
+            this.musicPlayer = new MusicPlayer();
+            musicPlayer.Musicplayer.Volume = 0.05;
         }
 
-        public DataBaseViewModel ViewModel { get; set; }
+
+        private async void Music_ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            musicPlayList.Clear();
+                        
+            for (int i = Music_ListView.SelectedIndex; i < dataBaseViewModel.Databases.Count; i++)  //選択されたものから後ろをプレイリストに追加
+            {
+                musicPlayList.Add(dataBaseViewModel.Databases[i]);
+            }
+
+            var selectmeatadata = musicPlayList.GetMusicPlaylist[0];    //選択されたアイテムのMetadata
+
+            StorageFile audioFile = await selectmeatadata.MapFolder.GetFileAsync(selectmeatadata.AudioFilename);    //オーディオファイル読み込み
+            musicPlayer.Musicplayer.Source = MediaSource.CreateFromStorageFile(audioFile);  //メディアにセット
+
+            musicPlayer.Musicplayer.Play();
+
+            Debug.WriteLine(selectmeatadata.AudioFilename);
+            frontend.Title = selectmeatadata.Title;
+            frontend.Artist = selectmeatadata.Artist;
+        }
     }
 }

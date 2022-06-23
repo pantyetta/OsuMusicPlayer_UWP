@@ -27,7 +27,18 @@ namespace OsuMusicPlayer_UWP
         public MainPage()
         {
             this.InitializeComponent();
+            this.ViewUI = new UI();
+            this.UI_MusicPlayer = new MusicPlayer();
+            ViewUI.PropertyChanged += ViewUI_PropertyChanged;
         }
+
+        private void ViewUI_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Player_Metadata_Title.Text = ViewUI.Title;
+        }
+
+        public UI ViewUI { get; set; }
+        public MusicPlayer UI_MusicPlayer { get; set; }
 
         private double getNavigationHeight { get { return rootPage.Height - 1000; } }
 
@@ -167,6 +178,20 @@ namespace OsuMusicPlayer_UWP
                     .First(n => n.Tag.Equals(item.Tag));
 
                 NavView.Header = ((NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+            }
+        }
+
+        private void Player_PlayOrPause_Click(object sender, RoutedEventArgs e)
+        {
+            if (UI_MusicPlayer.Musicplayer.PlaybackSession.PlaybackState == Windows.Media.Playback.MediaPlaybackState.Playing)
+            {
+                UI_MusicPlayer.Musicplayer.Pause();
+                Player_PlayOrPause_Icon.Symbol = Symbol.Play;
+            }
+            else if (UI_MusicPlayer.Musicplayer.PlaybackSession.PlaybackState == Windows.Media.Playback.MediaPlaybackState.Paused)
+            {
+                UI_MusicPlayer.Musicplayer.Play();
+                Player_PlayOrPause_Icon.Symbol = Symbol.Pause;
             }
         }
     }
