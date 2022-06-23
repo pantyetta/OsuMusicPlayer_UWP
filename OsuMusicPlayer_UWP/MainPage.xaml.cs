@@ -193,5 +193,18 @@ namespace OsuMusicPlayer_UWP
                 Player_PlayOrPause_Icon.Symbol = Symbol.Pause;
             }
         }
+
+
+        private void Player_Volume_click(object sender, RoutedEventArgs e)
+        {
+            if (Player_Volume_Slider.Visibility != Visibility.Visible)
+            {
+                Player_Volume_Slider.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Player_Volume_Slider.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }

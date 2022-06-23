@@ -56,12 +56,12 @@
                     </StackPanel>
                 </Button>
 
-                <Button HorizontalAlignment="Right" Background="{x:Null}" Padding="5,5,5,5" Margin="0,0,30,0" CornerRadius="90,90,90,90">
-
+                <Button HorizontalAlignment="Right" Background="{x:Null}" Padding="5,5,5,5" Margin="0,0,30,0" CornerRadius="90,90,90,90" Click="Player_Volume_click">
                     <StackPanel>
                         <SymbolIcon x:Name="Player_Volume" Symbol="Volume" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
+                <Slider x:Name="Player_Volume_Slider" Margin="0,-70,30,0" VerticalAlignment="Top" Orientation="Vertical" Height="100" HorizontalAlignment="Right" Width="32" Maximum="100" Value="{x:Bind ViewUI.Volume}" Visibility="Collapsed"/>
 
             </Grid>
         </Grid>
