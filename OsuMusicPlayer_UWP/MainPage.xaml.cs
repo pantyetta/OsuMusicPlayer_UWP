@@ -41,7 +41,6 @@ namespace OsuMusicPlayer_UWP
         public MusicPlayer UI_MusicPlayer { get; set; }
 
         private double getNavigationHeight { get { return rootPage.Height - 1000; } }
-
         /// <summary>
         /// ページのリストを作成_pagesでページ管理
         /// </summary>
