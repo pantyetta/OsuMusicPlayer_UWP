@@ -9,6 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <Button Content="Choose Osu Folder" Click="Choose_Button_Click" VerticalAlignment="Top" />
+        <TextBlock x:Name="Choose_text" HorizontalAlignment="Left" Margin="144,6,0,0" TextWrapping="Wrap" Text="No Choose" VerticalAlignment="Top"/>
     </Grid>
 </Page>

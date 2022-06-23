@@ -8,60 +8,29 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <CollectionViewSource x:Name="RecordingsCollection" Source="{x:Bind ViewModel.Recordings}"/>
-        <local:StringFormatter x:Key="StringFormatterValueConverter"/>
-    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="BG_Grid">
-        <Pivot>
+        <Pivot VerticalAlignment="Stretch">
             <PivotItem Header="List" Margin="0,10,0,0">
-                <ListView  ItemsSource="{x:Bind ViewModel.Recordings}">
-                    <ListView.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40*"/>
-                                    <ColumnDefinition Width="30*"/>
-                                    <ColumnDefinition Width="30*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Composition" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                <TextBlock Grid.Column="1" Text="Artist" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                <TextBlock Grid.Column="2" Text="Release Date" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.HeaderTemplate>
+                <ListView x:Name="Music_ListView" ItemsSource="{x:Bind ViewModel.Databases}" SelectionChanged="Music_ListView_SelectionChanged" ShowsScrollingPlaceholders="False" Width="500" Height="500">
                     <ListView.ItemTemplate>
-                        <DataTemplate x:Name="TableDataTemplate" x:DataType="local:Recording">
-                            <Grid Height="48" AutomationProperties.Name="{x:Bind CompositionName}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="360"/>
-                                    <ColumnDefinition Width="360"/>
-                                    <ColumnDefinition Width="360"/>
-                                </Grid.ColumnDefinitions>
-                                <Ellipse Height="32" Width="32" VerticalAlignment="Center">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="/Assets/Thumbnail.png" Stretch="UniformToFill"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind CompositionName}" />
-                                <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind ArtistName}"/>
-                                <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{x:Bind ReleaseDateTime}"/>
+                        <DataTemplate x:Name="TableDataTemplate" x:DataType="local:Metadata">
+                            <Grid Height="48" AutomationProperties.Name="{x:Bind Title}">
+                                <TextBlock Grid.Column="1" Width="200" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Title}"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
             <PivotItem Header="Grid" Margin="0,10,0,0">
-                <GridView ItemsSource="{x:Bind ViewModel.Recordings}">
+                <GridView ItemsSource="{x:Bind ViewModel.Databases}">
                     <GridView.ItemTemplate>
-                        <DataTemplate x:Name="ImageTextDataTemplate" x:DataType="local:Recording">
-                            <StackPanel Height="280" Width="180" Margin="12" AutomationProperties.Name="{x:Bind CompositionName}">
+                        <DataTemplate x:Name="ImageTextDataTemplate" x:DataType="local:Metadata">
+                            <StackPanel Height="280" Width="180" Margin="12" AutomationProperties.Name="{x:Bind Title}">
                                 <Image Source="/Assets/Thumbnail.png" Height="180" Width="180" Stretch="UniformToFill"/>
                                 <StackPanel Margin="0,12">
-                                    <TextBlock Text="{x:Bind CompositionName}"/>
-                                    <TextBlock Text="{x:Bind ArtistName}" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                                    <TextBlock Text="{x:Bind Title}"/>
+                                    <TextBlock Text="" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
