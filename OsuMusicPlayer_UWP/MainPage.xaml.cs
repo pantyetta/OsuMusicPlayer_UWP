@@ -30,11 +30,12 @@ namespace OsuMusicPlayer_UWP
             this.ViewUI = new UI();
             this.UI_MusicPlayer = new MusicPlayer();
             ViewUI.PropertyChanged += ViewUI_PropertyChanged;
+
         }
 
         private void ViewUI_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Player_Metadata_Title.Text = ViewUI.Title;
+            Debug.WriteLine(e.PropertyName);
         }
 
         public UI ViewUI { get; set; }

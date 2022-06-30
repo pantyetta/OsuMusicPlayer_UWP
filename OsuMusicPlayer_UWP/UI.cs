@@ -13,16 +13,24 @@ namespace OsuMusicPlayer_UWP
         public event PropertyChangedEventHandler PropertyChanged;
 
         static private string Static_Title { get; set; }
-        public string Title { get { return Static_Title; } set { Static_Title = value; OnPropertyChanged(Static_Title); } }
+        public string Title { get { return Static_Title; } set { Static_Title = value; OnTitleChanged(); } }
+
         static private string Static_Artist { get; set; }
         public string Artist { get { return Static_Artist; } set { Static_Artist = value; } }
+
         static private double Static_Volume { get; set; }
-        public double Volume { get { return Static_Volume; } set { Static_Volume = value; } }
+        public double Volume { get { return Static_Volume; } set { Static_Volume = value; OnVolumeChanged(); } }
 
 
-        private void OnPropertyChanged([CallerMemberName] string Title = null)
+
+        private void OnTitleChanged([CallerMemberName] string Title = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Title));
+        }
+
+        private void OnVolumeChanged([CallerMemberName] string Volume = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Volume));
         }
 
 
