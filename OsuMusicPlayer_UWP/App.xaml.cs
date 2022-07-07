@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using SQLite_Library;
 
 namespace OsuMusicPlayer_UWP
 {
@@ -30,6 +31,8 @@ namespace OsuMusicPlayer_UWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            DataAccess.InitializeDatabase();
         }
 
         /// <summary>

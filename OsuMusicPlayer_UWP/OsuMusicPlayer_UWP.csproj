@@ -187,6 +187,12 @@
       <Version>2.1.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SQLite_Library\SQLite_Library.csproj">
+      <Project>{31589b36-73cc-4a98-ad1b-67cb5a4dfb76}</Project>
+      <Name>SQLite_Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
