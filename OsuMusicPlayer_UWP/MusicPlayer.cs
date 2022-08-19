@@ -14,6 +14,7 @@ namespace OsuMusicPlayer_UWP
 {
     public class MusicPlayer
     {
+        static private bool MediaEnded = false;
         private readonly MusicPlayList MusicPlayList = new MusicPlayList();
         static private MediaPlayer Static_MusicPlayer = new MediaPlayer();
         public MusicPlayer()
@@ -21,8 +22,11 @@ namespace OsuMusicPlayer_UWP
             Static_MusicPlayer.MediaEnded += Static_MusicPlayer_MediaEndedAsync;    //再生終了
         }
 
-        private async void Static_MusicPlayer_MediaEndedAsync(MediaPlayer sender, object args)
+        private async void  Static_MusicPlayer_MediaEndedAsync(MediaPlayer sender, object args)
         {
+            if (MediaEnded) return;
+            MediaEnded = true;
+
             var select = MusicPlayList.MoveNext();    //選択されたアイテムのMetadata
 
             StorageFolder OsuFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync("OsuFolderToken");
@@ -32,6 +36,7 @@ namespace OsuMusicPlayer_UWP
 
             Musicplayer.Play();
 
+            MediaEnded = false;
             Debug.WriteLine(select.AudioFilename);
         }
 
@@ -40,7 +45,7 @@ namespace OsuMusicPlayer_UWP
 
     public class MusicPlayList
     {
-        static private int index;
+        static private int index = 0;
         static private Collection<Metadata> Static_MusicPlaylist = new Collection<Metadata>();
 
         public Collection<Metadata> GetMusicPlaylist { get { return Static_MusicPlaylist; } }
