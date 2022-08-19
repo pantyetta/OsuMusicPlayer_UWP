@@ -7,6 +7,8 @@ using Microsoft.Data.Sqlite;
 using Windows.Storage;
 using System.IO;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
+
 
 namespace SQLite_Library
 {
@@ -67,6 +69,65 @@ namespace SQLite_Library
 
                 db.Close();
             }
+        }
+
+        public static Collection<Metadata> GetData()
+        {
+            Collection<Metadata> entries = new Collection<Metadata>();
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "collection.db");
+            using(SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand("Select * from MapDB", db);
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    entries.Add(
+                        new Metadata
+                        {
+                            FolderPath = query.GetString(1),
+                            AudioFilename = query.GetString(2),
+                            Title = query.GetString(3),
+                            TitleUnicode = query.GetString(4),
+                            Artist = query.GetString(5),
+                            ArtistUnicode = query.GetString(6),
+                            Creator = query.GetString(7),
+                            BeatmapID = query.GetInt32(8)
+                        }
+                     );
+                }
+
+                db.Close();
+            }
+
+            return entries;
+        }
+    }
+
+    public class Metadata
+    {
+        public string FolderPath { get; set; }
+        public string AudioFilename { get; set; }
+        public string Title { get; set; }
+        public string TitleUnicode { get; set; }
+        public string Artist { get; set; }
+        public string ArtistUnicode { get; set; }
+        public string Creator { get; set; }
+        public int BeatmapID { get; set; }
+
+        public Metadata()
+        {
+            FolderPath = "";
+            AudioFilename = "";
+            Title = "";
+            TitleUnicode = "";
+            Artist = "";
+            ArtistUnicode = "";
+            Creator = "";
+            BeatmapID = -1;
         }
     }
 }

@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SQLite_Library;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace OsuMusicPlayer_UWP
 {
@@ -33,6 +35,23 @@ namespace OsuMusicPlayer_UWP
             this.Suspending += OnSuspending;
 
             DataAccess.InitializeDatabase();
+            
+
+            DataBaseViewModel cashedb = new DataBaseViewModel();
+            var db = DataAccess.GetData();
+            foreach(var item in db) {
+                cashedb.createCashe = new Metadata
+                {
+                    FolderPath = item.FolderPath,
+                    AudioFilename = item.AudioFilename,
+                    Title = item.Title,
+                    TitleUnicode = item.TitleUnicode,
+                    Artist = item.Artist,
+                    ArtistUnicode = item.ArtistUnicode,
+                    Creator = item.Creator,
+                    BeatmapID = item.BeatmapID
+                };
+            }
         }
 
         /// <summary>
