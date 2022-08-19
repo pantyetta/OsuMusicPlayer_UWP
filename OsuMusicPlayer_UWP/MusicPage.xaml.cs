@@ -8,6 +8,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -51,16 +52,18 @@ namespace OsuMusicPlayer_UWP
                 musicPlayList.Add(dataBaseViewModel.Databases[i]);
             }
 
-            var selectmeatadata = musicPlayList.GetMusicPlaylist[0];    //選択されたアイテムのMetadata
+            var select = musicPlayList.GetMusicPlaylist[0];    //選択されたアイテムのMetadata
 
-            StorageFile audioFile = await selectmeatadata.MapFolder.GetFileAsync(selectmeatadata.AudioFilename);    //オーディオファイル読み込み
-            musicPlayer.Musicplayer.Source = MediaSource.CreateFromStorageFile(audioFile);  //メディアにセット
+            StorageFolder OsuFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync("OsuFolderToken");
+            StorageFile AudioFile = await OsuFolder.GetFileAsync($"Songs\\{select.FolderPath}\\{select.AudioFilename}");
+            //StorageFile audioFile = await select.MapFolder.GetFileAsync(select.AudioFilename);    //オーディオファイル読み込み
+            musicPlayer.Musicplayer.Source = MediaSource.CreateFromStorageFile(AudioFile);  //メディアにセット
 
             musicPlayer.Musicplayer.Play();
 
-            Debug.WriteLine(selectmeatadata.AudioFilename);
-            frontend.Title = selectmeatadata.Title;
-            frontend.Artist = selectmeatadata.Artist;
+            Debug.WriteLine(select.AudioFilename);
+            frontend.Title = select.Title;
+            frontend.Artist = select.Artist;
         }
     }
 }

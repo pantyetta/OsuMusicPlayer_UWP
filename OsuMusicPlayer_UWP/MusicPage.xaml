@@ -12,7 +12,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="BG_Grid">
         <Pivot VerticalAlignment="Stretch">
             <PivotItem Header="List" Margin="0,10,0,0">
-                <ListView x:Name="Music_ListView" ItemsSource="{x:Bind ViewModel.Databases}" SelectionChanged="Music_ListView_SelectionChanged" ShowsScrollingPlaceholders="False" Width="500" Height="500">
+                <ListView x:Name="Music_ListView" ItemsSource="{x:Bind ViewModel.Databases}" SelectionChanged="Music_ListView_SelectionChanged" ShowsScrollingPlaceholders="False" Width="700" Height="480">
                     <ListView.ItemTemplate>
                         <DataTemplate x:Name="TableDataTemplate" x:DataType="local:Metadata">
                             <Grid Height="48" AutomationProperties.Name="{x:Bind Title}">

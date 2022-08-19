@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 
 namespace OsuMusicPlayer_UWP
 {
@@ -17,20 +18,21 @@ namespace OsuMusicPlayer_UWP
         static private MediaPlayer Static_MusicPlayer = new MediaPlayer();
         public MusicPlayer()
         {
-            Static_MusicPlayer.MediaEnded += Static_MusicPlayer_MediaEndedAsync;
+            Static_MusicPlayer.MediaEnded += Static_MusicPlayer_MediaEndedAsync;    //再生終了
         }
 
         private async void Static_MusicPlayer_MediaEndedAsync(MediaPlayer sender, object args)
         {
-            MusicPlayList.MoveNext();
-            var selectmeatadata = MusicPlayList.CurrentItem();    //選択されたアイテムのMetadata
+            var select = MusicPlayList.MoveNext();    //選択されたアイテムのMetadata
 
-            StorageFile audioFile = await selectmeatadata.MapFolder.GetFileAsync(selectmeatadata.AudioFilename);    //オーディオファイル読み込み
-            Musicplayer.Source = MediaSource.CreateFromStorageFile(audioFile);  //メディアにセット
+            StorageFolder OsuFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync("OsuFolderToken");
+            StorageFile AudioFile = await OsuFolder.GetFileAsync($"Songs\\{select.FolderPath}\\{select.AudioFilename}");
+            //StorageFile audioFile = await select.MapFolder.GetFileAsync(select.AudioFilename);    //オーディオファイル読み込み
+            Musicplayer.Source = MediaSource.CreateFromStorageFile(AudioFile);  //メディアにセット
 
             Musicplayer.Play();
 
-            Debug.WriteLine(selectmeatadata.AudioFilename);
+            Debug.WriteLine(select.AudioFilename);
         }
 
         public MediaPlayer Musicplayer { get { return Static_MusicPlayer; } set { Static_MusicPlayer = value; } }
@@ -42,7 +44,11 @@ namespace OsuMusicPlayer_UWP
         static private Collection<Metadata> Static_MusicPlaylist = new Collection<Metadata>();
 
         public Collection<Metadata> GetMusicPlaylist { get { return Static_MusicPlaylist; } }
-        public void Clear() => Static_MusicPlaylist.Clear();    //プレイリストclear
+        public void Clear()
+        {
+            Static_MusicPlaylist.Clear();    //プレイリストclear
+            index = 0;
+        }
         public void Add(Metadata metadata) => Static_MusicPlaylist.Add(metadata);   //Add Playlist
         public Metadata CurrentItem() => Static_MusicPlaylist[index];  // 現在のMetadataを返す
         public int CurrentItemIndex() => index; //現在の番号を返す
