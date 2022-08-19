@@ -38,6 +38,35 @@ namespace SQLite_Library
 
                 createTable.ExecuteReader();
             }
+        }
+
+        public static void AddData(string inputText)
+        {
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "collection.db");
+            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+            {
+                var command = inputText.Split(", ");
+
+                db.Open();
+
+                SqliteCommand insertCommand = new SqliteCommand();
+                insertCommand.Connection = db;
+
+                insertCommand.CommandText = "INSERT INTO MapDB (Primary_Key, FolderName, AudiofileName, Title, TitleUni, Artist, ArtistUni, Creater, BeatmapID) VALUES" +
+                    "(NULL, @FolderName, @AudiofileName, @Title, @TitleUni, @Artist, @ArtistUni, @Creater, @BeatmapID);";
+                insertCommand.Parameters.AddWithValue("@FolderName", command[0]);
+                insertCommand.Parameters.AddWithValue("@AudiofileName", command[1]);
+                insertCommand.Parameters.AddWithValue("@Title", command[2]);
+                insertCommand.Parameters.AddWithValue("@TitleUni", command[3]);
+                insertCommand.Parameters.AddWithValue("@Artist", command[4]);
+                insertCommand.Parameters.AddWithValue("@ArtistUni", command[5]);
+                insertCommand.Parameters.AddWithValue("@Creater", command[6]);
+                insertCommand.Parameters.AddWithValue("@BeatmapID", command[7]);
+
+                insertCommand.ExecuteReader();
+
+                db.Close();
             }
+        }
     }
 }

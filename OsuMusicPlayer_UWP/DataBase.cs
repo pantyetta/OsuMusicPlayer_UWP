@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using SQLite_Library;
 
 namespace OsuMusicPlayer_UWP
 {
@@ -36,9 +37,16 @@ namespace OsuMusicPlayer_UWP
         //private Metadata defaultDataBase = new Metadata();
         //public Metadata DefaultDataBase { get { return this.defaultDataBase; } }
 
+
         static private ObservableCollection<Metadata> _databases = new ObservableCollection<Metadata>();
         public ObservableCollection<Metadata> Databases { get { return _databases; } set { _databases = value; } }
-        public Metadata setDatabase { set { _databases.Add(value); } }
+        public Metadata setDatabase { 
+            set {
+                _databases.Add(value);
+                string dbCommand = $"{value.FolderPath}, {value.AudioFilename}, {value.Title}, {value.TitleUnicode}, {value.Artist}, {value.ArtistUnicode}, {value.Creator}, {value.BeatmapID}";
+                DataAccess.AddData(dbCommand);
+            } 
+        }
         //static private Collection<Metadata> databases = new Collection<Metadata>();    //更新すると関連するUIも変わる & 常に読み込まれるよ
         //public Collection<Metadata> Databases { get { return databases; } }  //データ取得
         //public Metadata setDatabas { set{ databases.Add(value); } } //データ追加
