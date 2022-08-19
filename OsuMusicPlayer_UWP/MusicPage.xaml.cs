@@ -29,7 +29,6 @@ namespace OsuMusicPlayer_UWP
         public DataBaseViewModel ViewModel { get; set; }
         public MusicPlayer musicPlayer { get; set; }
 
-        UI frontend = new UI();
         MusicPlayList musicPlayList = new MusicPlayList();
         DataBaseViewModel dataBaseViewModel = new DataBaseViewModel();
 
@@ -39,7 +38,6 @@ namespace OsuMusicPlayer_UWP
             //this.NavigationCacheMode = NavigationCacheMode.Enabled;
             this.ViewModel = new DataBaseViewModel();
             this.musicPlayer = new MusicPlayer();
-            musicPlayer.Musicplayer.Volume = 0.05;
         }
 
 
@@ -60,10 +58,6 @@ namespace OsuMusicPlayer_UWP
             musicPlayer.Musicplayer.Source = MediaSource.CreateFromStorageFile(AudioFile);  //メディアにセット
 
             musicPlayer.Musicplayer.Play();
-
-            Debug.WriteLine(select.AudioFilename);
-            frontend.Title = select.Title;
-            frontend.Artist = select.Artist;
         }
     }
 }

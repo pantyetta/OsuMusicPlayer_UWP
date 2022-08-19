@@ -25,20 +25,20 @@ namespace OsuMusicPlayer_UWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        UI ViewUI = new UI();
         public MainPage()
         {
             this.InitializeComponent();
-            this.ViewUI = new UI();
-            this.UI_MusicPlayer = new MusicPlayer();
+            DataContext = ViewUI;
             ViewUI.PropertyChanged += ViewUI_PropertyChanged;
+            this.UI_MusicPlayer = new MusicPlayer();
         }
 
         private void ViewUI_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Player_Metadata_Title.Text = ViewUI.Title;
+            ViewUI.Title = e.PropertyName;
         }
 
-        public UI ViewUI { get; set; }
         public MusicPlayer UI_MusicPlayer { get; set; }
 
         private double getNavigationHeight { get { return rootPage.Height - 1000; } }

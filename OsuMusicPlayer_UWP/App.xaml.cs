@@ -35,23 +35,9 @@ namespace OsuMusicPlayer_UWP
             this.Suspending += OnSuspending;
 
             DataAccess.InitializeDatabase();
-            
 
-            DataBaseViewModel cashedb = new DataBaseViewModel();
-            var db = DataAccess.GetData();
-            foreach(var item in db) {
-                cashedb.createCashe = new Metadata
-                {
-                    FolderPath = item.FolderPath,
-                    AudioFilename = item.AudioFilename,
-                    Title = item.Title,
-                    TitleUnicode = item.TitleUnicode,
-                    Artist = item.Artist,
-                    ArtistUnicode = item.ArtistUnicode,
-                    Creator = item.Creator,
-                    BeatmapID = item.BeatmapID
-                };
-            }
+            DataBaseViewModel db = new DataBaseViewModel();
+            db.CreateCashe();
         }
 
         /// <summary>

@@ -12,17 +12,17 @@ namespace OsuMusicPlayer_UWP
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        static private string Static_Title { get; set; }
-        public string Title { get { return Static_Title; } set { Static_Title = value; OnPropertyChanged(Static_Title); } }
-        static private string Static_Artist { get; set; }
+        private string Static_Title { get; set; }
+        public string Title { get { return Static_Title; } set { Static_Title = value; NotifyPropertyChanged(nameof(Title)); } }
+        private string Static_Artist { get; set; }
         public string Artist { get { return Static_Artist; } set { Static_Artist = value; } }
-        static private double Static_Volume { get; set; }
+        private double Static_Volume { get; set; }
         public double Volume { get { return Static_Volume; } set { Static_Volume = value; } }
 
 
-        private void OnPropertyChanged([CallerMemberName] string Title = null)
+        private void NotifyPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Title));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
 
@@ -33,4 +33,5 @@ namespace OsuMusicPlayer_UWP
             Volume = 50;
         }
     }
+
 }

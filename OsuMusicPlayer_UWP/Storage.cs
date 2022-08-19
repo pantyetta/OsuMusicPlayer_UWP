@@ -62,7 +62,10 @@ namespace OsuMusicPlayer_UWP
                 for (int i = 0; i < MapFolders.Count; i++)
                 {
                     if (i % 50 == 0)
+                    {
+                        databases.CreateCashe();
                         Debug.WriteLine("{0} / {1}", i, MapFolders.Count);
+                    }
                     //databases.setDatabas = item.Name;
                     var metadataList = await decoder.FolderSerach(MapFolders[i]); //デコーダからメタデータの配列もらう
                     foreach (var metadata in metadataList)
@@ -78,6 +81,7 @@ namespace OsuMusicPlayer_UWP
             }
             
             Debug.WriteLine("Metadata load ok.");
+            databases.CreateCashe();
         }
 
     }
@@ -124,7 +128,22 @@ namespace OsuMusicPlayer_UWP
                     foreach (string textblock in text.Split("\r\n\r\n"))    //段落ごとに読み込む
                     {
                         string[] textline = textblock.Split("\r\n");
-                        if (textline[0] == "[Difficulty]") //必要データを過ぎたら読み込み終了
+
+
+                        if (textline[0] == "[Events]")  //サムネ取得
+                        {
+                            try
+                            {
+                                metadata.Picture = textline[2].Split('"')[1];
+                            }
+                            catch(IndexOutOfRangeException)   // BGファイルが設定されていない
+                            {
+                                Debug.WriteLine($"Skip set Picture: {metadata.Title}");
+                            }
+                            break;
+                        } 
+
+                        if (textline[0] == "[TimingPoints]") //必要データを過ぎたら読み込み終了
                             break;
 
                         //一行ずつ読み込み (先頭行はセクション名なのでスキップ)
@@ -165,17 +184,22 @@ namespace OsuMusicPlayer_UWP
                                     metadata.BeatmapID = int.Parse(content[1]);
                                     break;
 
+                                case "[Difficulty]":
+                                    goto NextBlock;
+
                                 default:
                                     break;
                             }
                         }
+
+                        NextBlock:;
                     }
 
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("error: read" + e.Message);
+                Debug.WriteLine("error: read .osu file, " + e.Message + e.Data);
             }
 
             metadatas.Add(metadata);

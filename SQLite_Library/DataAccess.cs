@@ -33,7 +33,8 @@ namespace SQLite_Library
                     "Artist TEXT NULL, " +
                     "ArtistUni TEXT NULL, " +
                     "Creater TEXT NULL, " +
-                    "BeatmapID INTEGER NULL " +
+                    "BeatmapID INTEGER NULL, " +
+                    "Picture TEXT NULL " +
                     ")";
 
                 SqliteCommand createTable = new SqliteCommand(tableCommand, db);
@@ -42,28 +43,27 @@ namespace SQLite_Library
             }
         }
 
-        public static void AddData(string inputText)
+        public static void AddData(Metadata inputdata)
         {
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "collection.db");
             using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
             {
-                var command = inputText.Split(", ");
-
                 db.Open();
 
                 SqliteCommand insertCommand = new SqliteCommand();
                 insertCommand.Connection = db;
 
-                insertCommand.CommandText = "INSERT INTO MapDB (Primary_Key, FolderName, AudiofileName, Title, TitleUni, Artist, ArtistUni, Creater, BeatmapID) VALUES" +
-                    "(NULL, @FolderName, @AudiofileName, @Title, @TitleUni, @Artist, @ArtistUni, @Creater, @BeatmapID);";
-                insertCommand.Parameters.AddWithValue("@FolderName", command[0]);
-                insertCommand.Parameters.AddWithValue("@AudiofileName", command[1]);
-                insertCommand.Parameters.AddWithValue("@Title", command[2]);
-                insertCommand.Parameters.AddWithValue("@TitleUni", command[3]);
-                insertCommand.Parameters.AddWithValue("@Artist", command[4]);
-                insertCommand.Parameters.AddWithValue("@ArtistUni", command[5]);
-                insertCommand.Parameters.AddWithValue("@Creater", command[6]);
-                insertCommand.Parameters.AddWithValue("@BeatmapID", command[7]);
+                insertCommand.CommandText = "INSERT INTO MapDB (Primary_Key, FolderName, AudiofileName, Title, TitleUni, Artist, ArtistUni, Creater, BeatmapID, Picture) VALUES" +
+                    "(NULL, @FolderName, @AudiofileName, @Title, @TitleUni, @Artist, @ArtistUni, @Creater, @BeatmapID, @Picture);";
+                insertCommand.Parameters.AddWithValue("@FolderName", inputdata.FolderPath);
+                insertCommand.Parameters.AddWithValue("@AudiofileName", inputdata.AudioFilename);
+                insertCommand.Parameters.AddWithValue("@Title", inputdata.Title);
+                insertCommand.Parameters.AddWithValue("@TitleUni", inputdata.TitleUnicode);
+                insertCommand.Parameters.AddWithValue("@Artist", inputdata.Artist);
+                insertCommand.Parameters.AddWithValue("@ArtistUni", inputdata.ArtistUnicode);
+                insertCommand.Parameters.AddWithValue("@Creater", inputdata.Creator);
+                insertCommand.Parameters.AddWithValue("@BeatmapID", inputdata.BeatmapID);
+                insertCommand.Parameters.AddWithValue("@Picture", inputdata.Picture);
 
                 insertCommand.ExecuteReader();
 
@@ -95,7 +95,8 @@ namespace SQLite_Library
                             Artist = query.GetString(5),
                             ArtistUnicode = query.GetString(6),
                             Creator = query.GetString(7),
-                            BeatmapID = query.GetInt32(8)
+                            BeatmapID = query.GetInt32(8),
+                            Picture = query.GetString(9),
                         }
                      );
                 }
@@ -117,6 +118,7 @@ namespace SQLite_Library
         public string ArtistUnicode { get; set; }
         public string Creator { get; set; }
         public int BeatmapID { get; set; }
+        public string Picture { get; set; }
 
         public Metadata()
         {
@@ -128,6 +130,7 @@ namespace SQLite_Library
             ArtistUnicode = "";
             Creator = "";
             BeatmapID = -1;
+            Picture = "";
         }
     }
 }

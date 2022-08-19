@@ -19,6 +19,7 @@ namespace OsuMusicPlayer_UWP
         public string ArtistUnicode { get; set; }
         public string Creator { get; set; }
         public int BeatmapID { get; set; }
+        public string Picture { get; set; }
 
         public Metadata() {
             FolderPath = "";
@@ -29,6 +30,7 @@ namespace OsuMusicPlayer_UWP
             ArtistUnicode = "";
             Creator = "";
             BeatmapID = -1;
+            Picture = "";
         }
     }
 
@@ -42,16 +44,39 @@ namespace OsuMusicPlayer_UWP
         public ObservableCollection<Metadata> Databases { get { return _databases; } set { _databases = value; } }
         public Metadata setDatabase { 
             set {
-                string dbCommand = $"{value.FolderPath}, {value.AudioFilename}, {value.Title}, {value.TitleUnicode}, {value.Artist}, {value.ArtistUnicode}, {value.Creator}, {value.BeatmapID}";
-                DataAccess.AddData(dbCommand);
+                DataAccess.AddData(new SQLite_Library.Metadata
+                {
+                    FolderPath = value.FolderPath,
+                    AudioFilename = value.AudioFilename,
+                    Title = value.Title,
+                    TitleUnicode = value.TitleUnicode,
+                    Artist = value.Artist,
+                    ArtistUnicode = value.ArtistUnicode,
+                    Creator = value.Creator,
+                    BeatmapID = value.BeatmapID,
+                    Picture = value.Picture,
+                });
             }
         }
 
-        public Metadata createCashe
+        public void CreateCashe()
         {
-            set
+            var db = DataAccess.GetData();
+            _databases.Clear();
+            foreach (var item in db)
             {
-                _databases.Add(value);
+                _databases.Add(new Metadata
+                {
+                    FolderPath = item.FolderPath,
+                    AudioFilename = item.AudioFilename,
+                    Title = item.Title,
+                    TitleUnicode = item.TitleUnicode,
+                    Artist = item.Artist,
+                    ArtistUnicode = item.ArtistUnicode,
+                    Creator = item.Creator,
+                    BeatmapID = item.BeatmapID,
+                    Picture = item.Picture,
+                });
             }
         }
         //static private Collection<Metadata> databases = new Collection<Metadata>();    //更新すると関連するUIも変わる & 常に読み込まれるよ
