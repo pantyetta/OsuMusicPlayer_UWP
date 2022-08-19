@@ -10,6 +10,7 @@ namespace OsuMusicPlayer_UWP
 {
     public class Metadata
     {
+        public string FolderPath { get; set; }
         public string AudioFilename { get; set; }
         public string Title { get; set; }
         public string TitleUnicode { get; set; }
@@ -17,8 +18,9 @@ namespace OsuMusicPlayer_UWP
         public string ArtistUnicode { get; set; }
         public string Creator { get; set; }
         public int BeatmapID { get; set; }
-        public StorageFolder MapFolder { get; set; }
+
         public Metadata() {
+            FolderPath = "";
             AudioFilename = "";
             Title = "";
             TitleUnicode = "";
@@ -26,7 +28,6 @@ namespace OsuMusicPlayer_UWP
             ArtistUnicode = "";
             Creator = "";
             BeatmapID = -1;
-            MapFolder = null;
         }
     }
 

@@ -22,9 +22,17 @@ namespace SQLite_Library
             {
                 db.Open();
 
-                String tableCommand = "CREATE TABLE IF NOT " +
-                    "EXISTS MyTable (Primary_Key INTEGER PRIMARY KEY, " +
-                    "Text_Entry NVARCHAR(2048) NULL)";
+                String tableCommand = "CREATE TABLE IF NOT EXISTS MapDB (" +
+                    "Primary_Key INTEGER PRIMARY KEY, " +
+                    "FolderName TEXT NULL, " +
+                    "AudiofileName TEXT NULL, " +
+                    "Title TEXT NULL, " +
+                    "TitleUni TEXT NULL, " +
+                    "Artist TEXT NULL, " +
+                    "ArtistUni TEXT NULL, " +
+                    "Creater TEXT NULL, " +
+                    "BeatmapID INTEGER NULL " +
+                    ")";
 
                 SqliteCommand createTable = new SqliteCommand(tableCommand, db);
 

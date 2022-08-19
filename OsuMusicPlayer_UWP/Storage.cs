@@ -64,11 +64,12 @@ namespace OsuMusicPlayer_UWP
                     if (i % 50 == 0)
                         Debug.WriteLine("{0} / {1}", i, MapFolders.Count);
                     //databases.setDatabas = item.Name;
-                    var metadataList = await decoder.ReadFilesAsync(MapFolders[i]); //デコーダからメタデータの配列もらう
+                    var metadataList = await decoder.FolderSerach(MapFolders[i]); //デコーダからメタデータの配列もらう
                     foreach (var metadata in metadataList)
                     {
                         databases.setDatabase = metadata;  //データベースに追加
                     }
+                    decoder.clear();
                 }
             }
             catch(Exception e)
@@ -86,6 +87,118 @@ namespace OsuMusicPlayer_UWP
     /// </summary>
     class Decoder
     {
+        private List<Metadata> metadatas = new List<Metadata>();   //複数対応
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="MapFolder">各マップのフォルダー</param>
+        public async Task<List<Metadata>> FolderSerach(StorageFolder MapFolder)
+        {
+           var list = await MapFolder.GetFilesAsync();
+
+            foreach(StorageFile file in list)
+            {
+                if (file.FileType != ".osu") continue;  // マップファイルじゃなかったら飛ばす
+
+                await ReadFileAsync(file);
+                foreach(var metadata in metadatas)
+                {
+                    metadata.FolderPath = MapFolder.Name;
+                }
+
+            }
+            return metadatas;
+        }
+
+        private async Task ReadFileAsync(StorageFile osuFile)
+        {
+            var metadata = new Metadata();
+
+            try
+            {
+                //データを読んでメタデータに入れる
+                var buffer = await FileIO.ReadBufferAsync(osuFile);
+                using (var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
+                {
+                    string text = dataReader.ReadString(buffer.Length);
+                    foreach (string textblock in text.Split("\r\n\r\n"))    //段落ごとに読み込む
+                    {
+                        string[] textline = textblock.Split("\r\n");
+                        if (textline[0] == "[Difficulty]") //必要データを過ぎたら読み込み終了
+                            break;
+
+                        //一行ずつ読み込み (先頭行はセクション名なのでスキップ)
+                        for (int i = 1; i < textline.Length; i++)
+                        {
+                            string[] content = textline[i].Split(":");
+                            switch (content[0])
+                            {
+                                case "AudioFilename":
+                                    var AudiofileName = content[1].TrimStart();
+                                    if (Check(AudiofileName))
+                                        metadata.AudioFilename = AudiofileName;
+                                    else
+                                        return;
+                                    break;
+
+                                case "Title":
+                                    metadata.Title = content[1].TrimStart();
+                                    break;
+
+                                case "TitleUnicode":
+                                    metadata.TitleUnicode = content[1].TrimStart();
+                                    break;
+
+                                case "Artist":
+                                    metadata.Artist = content[1].TrimStart();
+                                    break;
+
+                                case "ArtistUnicode":
+                                    metadata.ArtistUnicode = content[1].TrimStart();
+                                    break;
+
+                                case "Creator":
+                                    metadata.Creator = content[1].TrimStart();
+                                    break;
+
+                                case "BeatmapID":
+                                    metadata.BeatmapID = int.Parse(content[1]);
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("error: read" + e.Message);
+            }
+
+            metadatas.Add(metadata);
+        }
+
+
+        private bool Check(string AudioFileName)
+        {
+            if (metadatas.Count > 0)
+            {
+                foreach (var metadata in metadatas)
+                {
+                    if(metadata.AudioFilename == AudioFileName) return false;
+                }
+            }
+            return true;
+        }
+
+        public void clear()
+        {
+            metadatas.Clear();
+        }
+        /*
         async public Task<List<Metadata>> ReadFilesAsync(StorageFolder MapFolder)
         {
             var metadatas = new List<Metadata>();   //複数に対応できるように配列に格納
@@ -99,6 +212,7 @@ namespace OsuMusicPlayer_UWP
                     {
                         var metadata = await ConverterAsync(file);
                         metadata.MapFolder = MapFolder;
+                        Debug.WriteLine(MapFolder.Path);
                         //metadata.Result.Title
                         //ファイルを読んでConverterに送る
                         //Converterで必要なmetadataを返してもらう
@@ -188,6 +302,6 @@ namespace OsuMusicPlayer_UWP
             }
 
             return metadata;
-        }
+        }*/
     }
 }
