@@ -5,54 +5,65 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace OsuMusicPlayer_UWP
 {
     public class MusicPlayer
     {
         static private bool MediaEnded = false;
-        static private bool SourceChange = false;
+        private bool SourceChange = false;
 
         private readonly MusicPlayList MusicPlayList = new MusicPlayList();
         static private MediaPlayer Static_MusicPlayer = new MediaPlayer();        
         UI frontend = new UI();
+        Storage storage = new Storage();
 
         public MusicPlayer()
         {
-            Static_MusicPlayer.SourceChanged += Static_MusicPlayer_SourceChanged;
-            Static_MusicPlayer.MediaEnded += Static_MusicPlayer_MediaEndedAsync;    //再生終了
+            Static_MusicPlayer.SourceChanged += Static_MusicPlayer_SourceChanged;   // 再生メディア変更
+            Static_MusicPlayer.MediaEnded += Static_MusicPlayer_MediaEnded;    //次の曲再生
             Musicplayer.Volume = 0.05;
         }
 
-        private void Static_MusicPlayer_SourceChanged(MediaPlayer sender, object args)
+        private async void Static_MusicPlayer_SourceChanged(MediaPlayer sender, object args)
         {
             if (SourceChange) return;
             SourceChange = true;
 
-            var nowplay = MusicPlayList.CurrentItem();
+            Metadata nowplay = MusicPlayList.CurrentItem();
             Debug.WriteLine(nowplay.AudioFilename);
             frontend.Title = nowplay.Title;
             frontend.Artist = nowplay.Artist;
 
+            frontend.Picture = await storage.getImageAsync(nowplay.FolderPath, nowplay.Picture);
+
+            //BitmapImage bitmapImage = new BitmapImage();
+            //bitmapImage.SetSource(filestream);
+            //frontend.Picture.SetSource(filestream);
+
             SourceChange = false;
         }
 
-        private async void  Static_MusicPlayer_MediaEndedAsync(MediaPlayer sender, object args) //次の曲再生
+        private async void Static_MusicPlayer_MediaEnded(MediaPlayer sender, object args) 
         {
             if (MediaEnded) return;
             MediaEnded = true;
 
-            var select = MusicPlayList.MoveNext();    //選択されたアイテムのMetadata
+            MusicPlayList.MoveNext();
+            Metadata Next = MusicPlayList.CurrentItem();    //選択されたアイテムのMetadata
 
             StorageFolder OsuFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync("OsuFolderToken");
-            StorageFile AudioFile = await OsuFolder.GetFileAsync($"Songs\\{select.FolderPath}\\{select.AudioFilename}");
-            //StorageFile audioFile = await select.MapFolder.GetFileAsync(select.AudioFilename);    //オーディオファイル読み込み
+            StorageFile AudioFile = await OsuFolder.GetFileAsync($"Songs\\{Next.FolderPath}\\{Next.AudioFilename}");
             Musicplayer.Source = MediaSource.CreateFromStorageFile(AudioFile);  //メディアにセット
 
+            Debug.WriteLine("next track");
             Musicplayer.Play();
 
             MediaEnded = false;
@@ -74,18 +85,9 @@ namespace OsuMusicPlayer_UWP
         }
         public void Add(Metadata metadata) => Static_MusicPlaylist.Add(metadata);   //Add Playlist
         public Metadata CurrentItem() => Static_MusicPlaylist[index];  // 現在のMetadataを返す
+        public Metadata GetItem(int index) => Static_MusicPlaylist[index];
         public int CurrentItemIndex() => index; //現在の番号を返す
-        public Metadata MoveNext()  //一つ次のMetadata
-        {
-            index++;
-            return Static_MusicPlaylist[index];
-        }
-
-        public Metadata MovePrevious()  //一つ前のMetadata
-        {
-            index--;
-            return Static_MusicPlaylist[index];
-        }
-
+        public void MoveNext() => index++; //一つ次のMetadata
+        public void MovePrevious() => index--; //一つ前のMetadata
     }
 }

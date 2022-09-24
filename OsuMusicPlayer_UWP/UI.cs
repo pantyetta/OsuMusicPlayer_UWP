@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace OsuMusicPlayer_UWP
 {
@@ -18,6 +19,8 @@ namespace OsuMusicPlayer_UWP
         public string Artist { get { return Static_Artist; } set { Static_Artist = value; } }
         private double Static_Volume { get; set; }
         public double Volume { get { return Static_Volume; } set { Static_Volume = value; } }
+        private static Windows.Storage.Streams.IRandomAccessStream Static_Picture { get; set; }
+        public Windows.Storage.Streams.IRandomAccessStream Picture { get { return Static_Picture; } set { Static_Picture = value; } }
 
 
         private void NotifyPropertyChanged(string propertyName)
@@ -31,6 +34,7 @@ namespace OsuMusicPlayer_UWP
             Title = "None";
             Artist = "None";
             Volume = 50;
+            Picture = null;
         }
     }
 

@@ -32,6 +32,7 @@ namespace OsuMusicPlayer_UWP
         MusicPlayList musicPlayList = new MusicPlayList();
         DataBaseViewModel dataBaseViewModel = new DataBaseViewModel();
 
+
         public MusicPage()
         {
             this.InitializeComponent();

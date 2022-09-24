@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace OsuMusicPlayer_UWP
 {
@@ -84,6 +85,15 @@ namespace OsuMusicPlayer_UWP
             databases.CreateCashe();
         }
 
+        public async Task<Windows.Storage.Streams.IRandomAccessStream> getImageAsync(string folder, string name)
+        {
+
+            StorageFolder OsuFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync("OsuFolderToken");
+            var Picture = await OsuFolder.GetFileAsync($"Songs\\{folder}\\{name}");
+            var filestream = await Picture.OpenAsync(FileAccessMode.Read);
+
+            return filestream;
+        }
     }
 
     /// <summary>
